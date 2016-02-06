@@ -2,14 +2,15 @@
  * Created by arnolds on 16.4.2.
  */
 var ws;     // web socket
+var canvas;  // canvas element
 var ctx;    // canvas context
 var pixelSize = 10;
 var canvas_width = 40;
 var canvas_height = 40;
+var hammertime;  // touch controls
 
-// log function
 var log = function(data) {
-    console.log(data);
+    //console.log(data);
 };
 
 var sendMsg = function() {log("Warning: socket not initialised!")};

@@ -1,27 +1,29 @@
-var myName = Math.random().toString(36).substr(2, 4);
-var myDirection = "d";
+var lastpan = 'panright';
+var panmap = { "panleft":'a', "panright":'d', "panup":'w', "pandown":'s'}
 
 function init() {
-    log("init!!!");
     initCtx();
-    log("clearit!!!");
     clearCanvas();
-    log("sendit!!!");
-    ws.send("n:"+myName);
-    log("defineit!!!");
-    sendMsg = function () {
-        ws.send("d:"+myName+":"+myDirection);
+    sendMsg = function (msg) {
+        ws.send(msg);
     }
 
     getMsg = function(data) {
-        log("got msg!");
         clearCanvas();
         data = JSON.parse(data);
-        log(data);
         $.each(data, function(key, val) {
             drawThing(key, val);
         });
     }
+
+    hammertime = new Hammer(canvas);
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.on('panleft panright panup pandown', function(ev) {
+        if (ev.type == lastpan) return;
+        log(ev.type);
+        lastpan = ev.type;
+        sendMsg(panmap[ev.type]);
+    });
     log("init done!!")
 }
 

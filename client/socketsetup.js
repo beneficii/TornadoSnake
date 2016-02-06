@@ -1,32 +1,27 @@
 /**
  * Created by arnolds on 16.4.2.
  */
+ var HOST = 'localhost';
+ var PORT = '8888';
+
 $(document).ready(function() {
+    // create websocket instance
+    ws = new WebSocket("ws://" + HOST + ":"+PORT+"/ws");
 
-    $("#open").click(function(evt) {
-        evt.preventDefault();
+    // Handle incoming websocket message callback
+    ws.onmessage = function(evt) {
+        getMsg(evt.data);
+    };
 
-        var host = $("#host").val();
+    // Close Websocket callback
+    ws.onclose = function(evt) {
+        log("***Connection Closed***");
+    };
 
-        // create websocket instance
-        ws = new WebSocket("ws://" + host + ":8888/ws");
-
-        // Handle incoming websocket message callback
-        ws.onmessage = function(evt) {
-            log("Message Received: " + evt.data);
-            getMsg(evt.data);
-        };
-
-        // Close Websocket callback
-        ws.onclose = function(evt) {
-            log("***Connection Closed***");
-        };
-
-        // Open Websocket callback
-        ws.onopen = function(evt) {
-            $("#host").css("background", "#00ff00");
-            log("***Connection Opened***");
-            init();
-        };
-    });
+    // Open Websocket callback
+    ws.onopen = function(evt) {
+        $("#host").css("background", "#00ff00");
+        log("***Connection Opened***");
+        init();
+    };
 });

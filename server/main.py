@@ -2,7 +2,6 @@ import socket
 from tornado import httpserver,web, ioloop
 from socket_handler import WSHandler, send_to_all
 from thread import start_new_thread
-from time import sleep
 import threading
 
 application = web.Application([
@@ -18,7 +17,8 @@ def run_server():
 
 
 def loop():
-    threading.Timer(1, loop).start()
+    threading.Timer(0.4, loop).start()
+
     send_to_all()
 
 if __name__ == "__main__":

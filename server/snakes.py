@@ -23,6 +23,14 @@ class Snake:
     def move(self):
         self.x += {'a':-1, 'd':1}.get(self.dir, 0)
         self.y += {'w':-1, 's':1}.get(self.dir, 0)
+        if self.x < 0:
+            self.x = map_width - 1
+        elif self.x >= map_width:
+            self.x = 0
+        if self.y < 0:
+            self.y = map_height - 1
+        elif self.y >= map_height:
+            self.y = 0
 
 
 def new_snake(private_key):

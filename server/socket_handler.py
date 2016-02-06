@@ -1,11 +1,12 @@
 from tornado import websocket
-from snakes import new_snake, change_snake_direction, generate_json
+from snakes import new_snake, change_snake_direction, generate_json, remove_snake, move_snakes
 from uuid import uuid4
 
 connections = set()
 
 
 def send_to_all():
+    move_snakes()
     json = generate_json()
     for con in connections:
         con.write_message(json)
@@ -14,7 +15,7 @@ def send_to_all():
 class WSHandler(websocket.WebSocketHandler):
 
     def open(self):
-        self.connections.add(self)
+        connections.add(self)
         self.id = uuid4()
         new_snake(self.id)
         print "new connection!"
@@ -23,8 +24,9 @@ class WSHandler(websocket.WebSocketHandler):
         change_snake_direction(self.id, message)
 
     def on_close(self):
-        self.connections.remove(self)
-        print 'connection closed!'
+        remove_snake(self.id)
+        connections.remove(self)
+        print "connection closed!"
 
     def check_origin(self, origin):
         return True

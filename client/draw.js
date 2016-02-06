@@ -3,7 +3,8 @@
  */
 function initCtx() {
     log("initCtx!!!");
-    ctx = $("#myCanvas")[0].getContext('2d');
+    canvas = $("#myCanvas")[0]
+    ctx = canvas.getContext('2d');
 }
 
 function clearCanvas() {
